@@ -1,0 +1,36 @@
+Erlang
+Erlang is a development platform for Erlang is a language for building realtime systems that are very scalable and require high avalilability. (accessible at any time)
+
+FreeBSD
+when it comes to raw performance, especially in regards to system load per packet, no other operating system can beat FreeBSD. 
+
+Ejabberd
+it handles the message routing, deliverability, and general instant messaging aspects of the app. Features of Ejabberd include:
+One-on-one messaging
+Group chat
+Storing and forwarding offline messages
+Contact list and presence
+
+Mnesia
+To store data and temporary messages, WhatsApp uses an Erlang-based, distributed DBMS (Database Management System) called Mnesia. 
+This DBMS provides benefits that many traditional databases.
+
+BEAM
+BEAM, short for “Bogdan’s Erlang Abstract Machine”, is a virtual machine that compiles and executes Erlang source code. 
+
+YAWS (Yet Another Web Server) 
+is an Erlang-based web server that's ideal for dynamic content. WhatsApp uses YAWS for storing multimedia data. Through the use of this technology,
+WhatsApp is able to send and receive multimedia data across billions of devices—in near real time.
+
+Conclusion
+The easiest way to get a full understanding of WhatsApp’s architecture design is, of course, through a WhatsApp architecture diagram.
+
+Starting from the left side we have multiple different clients (mobile and web apps), each of which hosts a local SQLite database for storing conversations. 
+
+The clients use HTTP WebSockets to send and retrieve multimedia data like images and videos from the YAWS web server. But, as you can see, 
+XMPP is used to actually send those files and other messages to other users.
+
+When an XMPP message is sent, it goes through the series of steps depicted above. First, it gets sent to WhatsApp’s custom Ejabberd server which runs on BEAM and FreeBSD.
+ The Ejabberd server saves the message in a Mnesia database table where it gets put into a queue. When the receiving user opens the app, thereby reconnecting to the socket, 
+the message in the queue gets routed through the Ejabberd server and delivered to the recipient. Once successful delivery can be confirmed,
+ the message gets deleted from the Mnesia database.
